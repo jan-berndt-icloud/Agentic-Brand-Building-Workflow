@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const LOGO_SRC = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAPoA+gDASIAAhEBAxEB/8QAHQABAQEAAwEBAQEAAAAAAAAAAAgHBQYJBAMBAv/EAE8QAQABAgMCBwoIDAUEAgMAAAABAgMEBQYHEQghMTdhdLMSExg2QVFWcXWxFCJic4GUstIWMlVmcoKRk5Wl0+MVI0JjoSRSotEXkjNDo//EABsBAQEBAQADAQAAAAAAAAAAAAAGBQcCAwQB/8QAPBEBAAECAgUHCwUBAAIDAQAAAAECAwQFBhFRccEhIjRBgbHREhUWMTM1UlNykaETMmHh8CMUQiWCovH/2gAMAwEAAhEDEQA/AIyBzmh9K51rPUeHyLIsLN/FXp31VTxUWqI5a658lMf+ojfMxDwuXKbdM11zqiHjVVFETVVOqIcTgcJisdi7WDwWHvYnE3qoot2rVE1111TyRERxzLe9nHBlz3NbVrHaxx8ZLh6t1UYSxEXMTVHyp/Ft/wDlPniG77HtlGndnWXU1Ya3Tjc5uUbsTmNyn49Xnpoj/RR0Rxz5ZniaEgM00tuV1TbwfJHxdc7o6u/cl8bnldUzTY5I29bPNK7Ftm2naKO8aawuOvUxG+9mEfCaqp8+6r4sT6oh3vA4HBYG1FrA4PD4W3Ebops2ooj9kQ+gSV7FXr867tc1b51sK5euXZ111TIA9D1gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD58dgcFjrU2sdg8Pircxumm9aiuP2TD6AiZidcETq9TPNVbFtm2oqK+/wCmsLgb1UTuvZfHwaqmfPup+LM+uJYTtH4Mue5Vau47R2PjOsPTvqnCX4i3iaY+TP4tz/xnzRKuRr4LPcdhJjya9cbJ5Y/rsffh8zxNieSrXGyeV5l47CYrA4u7g8bh72GxNmqaLlq7RNFdFUcsTE8cS/FfG2HZRp3aLl1VWJt04LObdG7DZjbp+PT5qa4/10dE8ceSY40R640rnWjNR4jIs9ws2MVZnfTVHHRdonkrony0z/7id0xMOiZRnlnMqdUclceuOMbYVeAzG3i41RyVbPBwYDbaL9sDhcTjsbYwWDs138TiLlNq1bojfVXXVO6IiPPMyvLYXs3wWzrSVGGqpt3c5xcRczHE0xv7qryW6Z/7Kd+6PPO+fLuYRwMtFUZrqbGaxx1mK8PlO6zhIqp3xViK446v1Kf+a6Z8iuXPdLc0qruf+Hbnkj938z1R2d+5K55jZqr/AEKZ5I9e8ARaeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGe7dNm+C2i6Srw1NNu1nOEibmXYmqN3c1eW3VP/ZVu3T5p3T5NzQh7sPiLmHu03bc6ph7LV2q1XFdE6ph5l47C4nA42/gsZZrsYnD3KrV23XG6qiumd0xMeeJgb3wzdFUZVqbB6xwNmKMPm2+zi4pp3RTiKI4qv16f+aKp8o7Hl+NpxuGov09f4nrhf4XERiLVNyOtu3By0/Rp3Y7kNjuIpvYyx8OvTu3TVVe+PG/pimaKf1WhvnyzC0YHLcLgbURFvD2aLVMRybqYiI9z6HHcVem/eruz/7TM/dAXrk3blVc9cgD0PWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzzhG6fo1Fsdz6x3EVXsHY+HWZ3b5pqs/Hnd0zTFdP6w73meFox2W4rA3YibeIs12qonk3VRMT7xVZDn1GX2arVyNeudcNvLMzpwtuaKo18r6AEqxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHGanz/ACjTOTXs3zvG28Jg7PLXVy1T5KaYjjqqnzQ8qKKq6oppjXMv2mmap1RHK5MYTjOEvpqjEVUYXT+a3rUTxV11W6Jn6N8+9+XhM5F6MZl+/oa8aPZlMa/0p/Hi++Mqxc/+nc3sYJ4TORejGZfv6Dwmci9GMy/f0Ho7mXyp+8eJ5qxnwdzexgnhM5F6MZl+/oPCZyL0YzL9/QejuZfKn7x4nmrGfB3N7GCeEzkXoxmX7+g8JnIvRjMv39B6O5l8qfvHieasZ8Hc3sYJ4TORejGZfv6Dwmci9GMy/f0Ho7mXyp+8eJ5qxnwdzexgnhM5F6MZl+/oPCZyL0YzL9/QejuZfKn7x4nmrGfB3N7GCeEzkXoxmX7+g8JnIvRjMv39B6O5l8qfvHieasZ8Hc3sYJ4TORejGZfv6Dwmci9GMy/f0Ho7mXyp+8eJ5qxnwdzexgnhM5F6MZl+/oPCZyL0YzL9/QejuZfKn7x4nmrGfB3N7GUaF28aP1LmdrLMRbxWT4u9VFNr4V3M2q6pnipiuJ4pnpiI6Wrs/FYO/hK/IvUzTL5b2HuWKvJuU6pAHzPSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJk4ZeZ4qrPsiybvkxhLeFqxPcRPFVXVVNO+fVFPF6586m0r8Mjx6yf2ZHa1qHRamJzKjXsnuauSxE4unX/ACw0B1VbAAAAAAAAAAAAAAAAC8NkeY4rNdmensfjbk3cRcwNuLldU75rmI7nup6Z3b5QeuXYXzRaa6lHvlHaZ0x/41uevyuDA0giP0aJ/ng7qA50kwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABK/DI8esn9mR2taqEr8Mjx6yf2ZHa1qPRX3jTunua2SdLjdLDQHU1qAAAAAAAAAAAAAAAALl2F80WmupR75Q0uXYXzRaa6lHvlH6Z9Ft/VwlgaQewp38HdQHOUmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABK/DI8esn9mR2taqEr8Mjx6yf2ZHa1qPRX3jTunua2SdLjdLDQHU1qAAAAAAAAAAAAAAAALl2F80WmupR75Q0uXYXzRaa6lHvlH6Z9Ft/VwlgaQewp38HdQHOUmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABK/DI8esn9mR2taqEr8Mjx6yf2ZHa1qPRX3jTunua2SdLjdLDQHU1qAAAAAAAAAAAAAAAALl2F80WmupR75Q0uXYXzRaa6lHvlH6Z9Ft/VwlgaQewp38HdQHOUmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABK/DI8esn9mR2taqEr8Mjx6yf2ZHa1qPRX3jTunua2SdLjdLDQHU1qAAAAAAAAAAAAAAAALl2F80WmupR75Q0uXYXzRaa6lHvlH6Z9Ft/VwlgaQewp38HdQHOUmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABK/DI8esn9mR2taqEr8Mjx6yf2ZHa1qPRX3jTunua2SdLjdLDQHU1qAAAAAAAAAAAAAAAALl2F80WmupR75Q0uXYXzRaa6lHvlH6Z9Ft/VwlgaQewp38HdQHOUmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABK/DI8esn9mR2taqEr8Mjx6yf2ZHa1qPRX3jTunua2SdLjdLDQHU1qAAAAAAAAAAAAAAAALl2F80WmupR75Q0uXYXzRaa6lHvlH6Z9Ft/VwlgaQewp38HdQHOUmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAHX9a6y05o7L/hmf5lawsVRPerUfGu3ZjyUURxz6+SPLMPO3aru1RRRGuZ6oeVFFVdXk0xrl2ASXtJ2/ajz25XhNMRcyLL98x3ymYnE3Y881clHqp4/lSzz8Pddemmo/wCKXvvKnD6IYu5RFVyqKZ2ettWshv1066piP4XuII/D3XXppqP+KXvvH4e669NNR/xS9957/Qu/82PtL2+j1z44XuII/D3XXppqP+KXvvH4e669NNR/xS9949C7/wA2PtJ6PXPjhe4gj8Pddemmo/4pe+8fh7rr001H/FL33j0Lv/Nj7Sej1z44XuII/D3XXppqP+KXvvH4e669NNR/xS9949C7/wA2PtJ6PXPjhe4gj8Pddemmo/4pe+8fh7rr001H/FL33j0Lv/Nj7Sej1z44XuII/D3XXppqP+KXvvH4e669NNR/xS9949C7/wA2PtJ6PXPjhe4gj8Pddemmo/4pe+8fh7rr001H/FL33j0Lv/Nj7Sej1z44XuII/D3XXppqP+KXvvH4e669NNR/xS9949C7/wA2PtJ6PXPjhe4gj8Pddemmo/4pe+8/tGv9dU1RVGs9Rb4nfx5nemP2TUehd/5sfaT0eufHC9hiPBv2rZhqy9e01qO5TezOxZm9h8Vuimb9ETETTVEbo7qN8Tvjljfv443ztyXx2Bu4G9Nm764/P8sXE4avDXJt1+sAfI9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlfhkePWT+zI7WtVCV+GR49ZP7Mjta1Hor7xp3T3NbJOlxulhoDqa1AAAAAAAAAAAAAAAAFy7C+aLTXUo98oaXLsL5otNdSj3yj9M+i2/q4SwNIPYU7+DuoDnKTAAAAAAAAAAAfyqYppmqqYiIjfMz5Af18mb5ll+UYC7j80xtjBYW1G+u9eriimPpn3Mo2m7edO6cm7gNPRbzzMqfizVRV/wBNanprj8f1U/thNGttaak1lj/hef5lcxHczM2rMfFtWv0aI4o9fLPlmVLlmjGJxequ7zKP59c7o8fy2MHk16/zq+bT+fs23aZwiYjvuXaFw+/lpnMsTb/5t2599X/18qfc4zPMc4zG7mOa42/jcXenfXevVzVVP0z5PNHJD4x0HAZXhsBT5Nmnl29c9v8AoVOFwVnCxqtx29YA0H1AAAAAAAAAAAAAAAAAANP4Lsz/APMmWfM4jsqllo04LvPLlfzOI7KpZbmemHT6fpjvlH5/0mN0d8gCVYgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlfhkePWT+zI7WtVCV+GR49ZP7Mjta1Hor7xp3T3NbJOlxulhoDqa1AAAAAAAAAAAAAAAAFy7C+aLTXUo98oaXLsL5otNdSj3yj9M+i2/q4SwNIPYU7+DuoDnKTAAAAAAAABwesNWaf0ll047P8AM7ODtzv73RM77l2fNRTHHVPq5PKmvabt/wA9z3vuX6VouZJl88U398fCrkeuOK3+rx8X43kauXZNiswn/nTqp2z6v77H24TL72KnmRybZ9TdtpO1PSmh7VdnHYv4Xme74mAw0xVc37uLu/JRHJy8e7kiUwbS9req9b1XMNexH+HZVVxRgcNVMU1R/uVctf08XmiHQLldd25VcuV1V11zNVVVU75mZ5ZmX+XQss0ewuB1VTHlV7Z4R1d/8qvB5VZw3O9dW2eAA32mAAAAAAAAAAAAAAAAAAAAAA0/gu88uV/M4jsqllo04LvPLlfzOI7KpZbmemHT6fpjvlH5/wBJjdHfIAlWIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAJ4o3yyPabt101pjvuAyXuc8zSnfTMWq/8AItT8quOWY81O/wAsTMPpwmCv4uv9OzTrn/evY91jD3L9Xk241y1PM8fgsswN3HZji7GEwtqnurl69XFFFMdMywLabwiLFnvuXaGsReucdM5jiKPiR026J5fXVujoliGu9c6m1rjfhOfZjXdt0zM2sNR8Sza/Ro5PpnfPnl1pe5ZonZs6q8VPlVbOr++5TYPI6LfOvcs7Or+33Z5m+aZ5mVzMc4x+Ix2LufjXb1c1T6o80eaI4ofCCvppimNVMaob0RERqgAfr9AAAAAAAAAAAAAAAAAAAAAAAAafwXeeXK/mcR2VSy0acF3nlyv5nEdlUstzPTDp9P0x3yj8/wCkxujvkASrEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEr8Mjx6yf2ZHa1qoSvwyPHrJ/ZkdrWo9FfeNO6e5rZJ0uN0sNAdTWoAAAAAAAAAAAAAAAAuXYXzRaa6lHvlDS5dhfNFprqUe+Ufpn0W39XCWBpB7Cnfwd1Ac5SYDh9WanyHSuW1Zhn2ZWMFZjf3MVzvruT5qaY46p6Ih5UW6rlUU0Rrmdj9ppmqfJpjXLmHSto+03SuhrFVOZ4zv+YTTvt4DDzFV6rzTMclEdNW7o38jCtpvCCznN5u5fpG3XlGBnfTOKq3TibkdHkt/RvnphiV+7dv3q71+5Xdu3KpqrrrqmaqpnlmZnllZZZolXc1XMXOqNkevtnq/3qUGDyKqrnX51Rs62ibTNsOq9aTcwkXv8Kymri+BYaufjx/uV8tfq4qehnALvDYWzhaP07NMUx/Cls2bdmnybcaoAHve0AAAAAAAAAAAAAAAAAAAAAAAAAAABp/Bd55cr+ZxHZVLLRpwXeeXK/mcR2VSy3M9MOn0/THfKPz/pMbo75AEqxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABK/DI8esn9mR2taqEw8MvA4mnUuRZnNufg1zB1WIr3cXd01zVMT9Fcf8AKi0VmIzKnXsnua2SzEYunt7mBgOqLUAAAAAAAAAAAAAAAAXLsL5otNdSj3yhpcuwvmi011KPfKP0z6Lb+rhLA0g9hTv4O6vwx+LwmAwd3GY7E2cLhrVPdXLt6uKKKI88zPFDMNpu3DS+lO+4HLKqc8zWnfHerFf+Tan5dzjjf0U754t07kya+19qfW+M79nmYVVWKat9rCWt9Fi16qfLPTO+elOZZo1isbqrr5lG2fXO6PFk4PKL2I51XNp/3U3Habwh8FhIu5doixGMv8dM5hfpmLVP6FE8dXrndHRMJ21Bneb6gzKvMs6zDEY7FV8ty9Vv3R5ojkiOiN0OOHQcvynC4CnVZp5ds+uf9/CqwuBs4WNVuOXb1gDSfWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0/gu88uV/M4jsqllo04LvPLlfzOI7KpZbmemHT6fpjvlH5/wBJjdHfIAlWIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOF1ppfJtX5DdybPML3/DVz3VM0z3NduuOSumfJVG/3xO+JmHNDyt3KrdUV0TqmOt5U1TRMVUzqmE8YzgxYWvEVVYPWV6zZn8Wi7l8XKo9dUXKYn9kPx8GD8+P5V/eUaNuNJcziNX6v4p8GhGcYyP/AH/EeCcvBg/Pj+Vf3jwYPz4/lX95Roek2afN/FPg/fPGM+P8R4Jy8GD8+P5V/ePBg/Pj+Vf3lGh6TZp838U+B54xnx/iPBOXgwfnx/Kv7x4MH58fyr+8o0PSbNPm/inwPPGM+P8AEeCcvBg/Pj+Vf3jwYPz4/lX95Roek2afN/FPgeeMZ8f4jwTl4MH58fyr+8eDB+fH8q/vKND0mzT5v4p8DzxjPj/EeCcvBg/Pj+Vf3jwYPz4/lX95Roek2afN/FPgeeMZ8f4jwTl4MH58fyr+8eDB+fH8q/vKND0mzT5v4p8DzxjPj/EeCcvBg/Pj+Vf3jwYPz4/lX95vGqNRZJpjLKsyz3MrGBw1PJVcq46581NMcdU9ERMpw2mcIXNMy77l+jbNeWYSd9M4y7ETiK4+THJRH7Z9TUy7H57mFX/Kvk2zFOru7n2YTE5nip5lXJt1Rq7nX9qOyrINCZbcqxWv7GKzTuYmxl1OX9zcub55ZmLlXcRu3zvmN07tz/WzS1tR1/p+NH5Nm9zC6fwW+m9ernvdFNNX/wCua6Y7qvy/E5OPj4tzLMViL+KxFzE4q9cv3rlXdV3LlU1VVT55meOZWrweMvw2X7IMijD0RTViLdWIu1RHHXXVVPHP0bo9UQ284xF3LsFTVdmLlyZ5JmI1ROr1xER1dW/saOPu14TDxNc+XVr5JmI5OxlMcGPH7uPV+G39Rq++eDHjvS/DfUavvqWEl6T5n8z8R4MPzzjPi/EeCafBjx3pfhvqNX3zwY8d6X4b6jV99Swek+Z/M/EeB55xnxfiPBNPgx470vw31Gr754MeO9L8N9Rq++pYPSfM/mfiPA884z4vxHgmnwY8d6X4b6jV988GPHel+G+o1ffUsHpPmfzPxHgeecZ8X4jwTT4MeO9L8N9Rq++eDHjvS/DfUavvqWD0nzP5n4jwPPOM+L8R4Jp8GPHel+G+o1ffPBjx3pfhvqNX31LB6T5n8z8R4HnnGfF+I8E0+DHjvS/DfUavvngx470vw31Gr76lg9J8z+Z+I8DzzjPi/EeCafBjx3pfhvqNX3zwY8d6X4b6jV99Swek+Z/M/EeB55xnxfiPBNPgx470vw31Gr754MeO9L8N9Rq++pYPSfM/mfiPA884z4vxHgibalsm1JoK3RjcXVZx+WV19xGLw8TuoqnkiumeOmZ+mOnez5fm0TLsPm2hM9y/FURVbvYC9HHG/dVFEzTV64mIn6EBrbR3NrmY2Kv1f3Uz99aiynHV4u3Pl+uABQtUAAAAAAAAAAAAAAABp/Bd55cr+ZxHZVLLRpwXeeXK/mcR2VSy3M9MOn0/THfKPz/pMbo75AEqxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGYbTdtWltId9wWEuRnObU8XwfD1x3Fuf8AcuccR6o3z54jlfRhcJexVf6dmmap/wB9nts2Ll+rybca5aVi8Th8HhrmKxd+1h7Fqmarl27XFNFFMcszM8UQwrabwhsuy/vuXaLs0ZjiY30zjr1MxYon5FPFNc9PFH6UMM2g7RNU64xPdZ1j5jC01d1bwVjfRYt/q7+OemqZnpdSXeWaJW7WqvFz5U7I9Xbt7t6mweR0Uc6/yzs6v7cpqXUGdalzOvMs8zG/jsTV/qu1cVMeamOSmOiIiHFgsaKKaKYppjVEN+mmKY1RGqBcuwvmi011KPfKGly7C+aLTXUo98pHTPotv6uEsHSD2FO/g7qA5ykwAAAAAAAAAAAAAAAHG6p8Wc16le+xLz3ehGqfFnNepXvsS891/oV7O9vjiqNHv23OziALdRgAAAAAAAAAAAAAAANP4LvPLlfzOI7KpZaNOC7zy5X8ziOyqWW5nph0+n6Y75R+f9JjdHfIAlWIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA43UefZNpzLa8yzzMcPgMLR/ru1bt8+amOWqeiImX7RRVXVFNMa5l+00zVOqI5XJOp7QNoWl9EYXvmdY+n4TVTvtYOzurv3PVT5I6Z3R0sN2mcIfH47vuXaKsVYDDzvpnH36Ym9VHyKeOKPXO+f0ZYTjcVicbirmLxmIu4jEXau6uXbtc1V1z55meOVjlmiV27qrxc+TGyPX27O/c38HkddfOv8AJGzr/ppm03bZqjV3fcDgK6slymrfTNjD1/5l2n5dzl+iN0efey0F3hcJZwlH6dmmIj/fdS2bFuxT5NuNUAD6XuAAFy7C+aLTXUo98oaXLsL5otNdSj3yj9M+i2/q4SwNIPYU7+DuoDnKTAAAAAAAAAAAAAAAAcbqnxZzXqV77EvPd6Eap8Wc16le+xLz3X+hXs72+OKo0e/bc7OIAt1GAAAAAAAAAAAAAAAA0/gu88uV/M4jsqllo04LvPLlfzOI7KpZbmemHT6fpjvlH5/0mN0d8gCVYgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/PE37OGw9zEYm9bs2bdM1XLlyqKaaaY5ZmZ4ohnO03bLpXRnfcHauf4vm1O+PgmGrjdbn/cr5KfVG+ehMO0TaVqrXF+YzbHTawMVb7eBw++izT5t8ctU9NW/o3KDLNHMVjtVdXMo2z17o/0NTB5TexPOnm07Z4Q3TaZwhMpyrvuX6Os0ZtjI30zjLm+MNRPyY4puf8R5d8pw1VqXPdUZlVmOfZlfx2Inf3M3J+LRHmppjipjoiIcQOhZdk+Fy+n/AJU8u2fX/tyqwmAs4WOZHLt6wBqPtAAAAAAFy7C+aLTXUo98oaXLsL5otNdSj3yj9M+i2/q4SwNIPYU7+DuoDnKTAAAAAAAAAAAAAAAAcbqnxZzXqV77EvPd6Eap8Wc16le+xLz3X+hXs72+OKo0e/bc7OIAt1GAAAAAAAAAAAAAAAA0/gu88uV/M4jsqllo04LvPLlfzOI7KpZbmemHT6fpjvlH5/0mN0d8gCVYgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOPz/OsqyDLbmZZzmGHwOEt/jXL1e6N/mjyzPmiOOU77TuERisTN3LtD2JwtnjpqzHEURNyrpt0TxU+urfPREtHL8qxWPq1WaeTbPqjt/0vrwuBvYqdVuOTb1Nx17rzTOicF3/AD3MKLd6qnurWFt/Gv3f0afN0zujpTJtN25am1T33A5TVVkmVVcU0Wa/867Hy645I6Kd3TvZfmGNxmY427jcfir2KxN2rurl69XNddc+eZnjl87oOWaNYXB6q7nPr2z6o3R4qnB5PZw/Oq51X4+xPHO+QFI1wAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAHG6p8Wc16le+xLz3ehGqfFnNepXvsS891/oV7O9vjiqNHv23OziALdRgAAAAAAAAAAAAAAANP4LvPLlfzOI7KpZaNOC7zy5X8ziOyqWW5nph0+n6Y75R+f9JjdHfIAlWIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA6jtT17lWgNPxmWYUVYi/eqm3hcLRVEVXq92+ePyUx5Z8m+OWZiHss2bl+5Fu3GuqfVDzt26rlUUURrmXa71y3ZtV3b1ym3boiaqq6p3RTEcszPkYptM4QOSZN33AaTt285x0b6ZxNUzGGtz0THHc+jdHymFbSNp+qtc3areY4v4Nl2/fRgMPM02o801eWuemfo3OkL3LNEqKNVzFzrn4Y9XbPX/vWpsHkVNPOvzrnZ1OZ1bqnP9V5lOYZ/md/G3uSiKp3UW481FMcVMeqHDAsrdum3TFNEaojqhQU000R5NMaoAHm8gAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAHG6p8Wc16le+xLz3ehGqfFnNepXvsS891/oV7O9vjiqNHv23OziALdRgAAAAAAAAAAAAAAANP4LvPLlfzOI7KpZaNOC7zy5X8ziOyqWW5nph0+n6Y75R+f9JjdHfIAlWIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJb4ZV67VrLJMPNczaoy+a6afJFVVyqJn6Ypp/YqRK/DI8esn9mR2tai0Vj/AOSp3T3NbJOlxulhoDqi1AAAAAAAAAAAAAAAAFy7C+aLTXUo98oaXLsL5otNdSj3yj9M+i2/q4SwNIPYU7+DuoDnKTAAAAAAAAAAAAAAAAcbqnxZzXqV77EvPd6Eap8Wc16le+xLz3X+hXs72+OKo0e/bc7OIAt1GAAAAAAAAAAAAAAAA0/gu88uV/M4jsqllo04LvPLlfzOI7KpZbmemHT6fpjvlH5/0mN0d8gCVYgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlfhkePWT+zI7WtVCV+GR49ZP7Mjta1Hor7xp3T3NbJOlxulhoDqa1AAAAAAAAAAAAAAAAFy7C+aLTXUo98oaXLsL5otNdSj3yj9M+i2/q4SwNIPYU7+DuoDnKTAAAAAAAAAAAAAAAAcbqnxZzXqV77EvPd6Eap8Wc16le+xLz3X+hXs72+OKo0e/bc7OIAt1GAAAAAAAAAAAAAAAA0/gu88uV/M4jsqllo04LvPLlfzOI7KpZbmemHT6fpjvlH5/wBJjdHfIAlWIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAHG6p8Wc16le+xLz3ehGqfFnNepXvsS891/oV7O9vjiqNHv23OziALdRgAAAAAAAAAAAAAAANP4LvPLlfzOI7KpZaNOC7zy5X8ziOyqWW5nph0+n6Y75R+f9JjdHfIAlWIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAHG6p8Wc16le+xLz3ehGqfFnNepXvsS891/oV7O9vjiqNHv23OziALdRgAAAAAAAAAAAAAAANP4LvPLlfzOI7KpZaNOC7zy5X8ziOyqWW5nph0+n6Y75R+f9JjdHfIAlWIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAHG6p8Wc16le+xLz3ehGqfFnNepXvsS891/oV7O9vjiqNHv23OziALdRgAAAAAAAAAAAAAAANP4LvPLlfzOI7KpZaNOC7zy5X8ziOyqWW5nph0+n6Y75R+f9JjdHfIAlWIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJX4ZHj1k/syO1rVQlfhkePWT+zI7WtR6K+8ad09zWyTpcbpYaA6mtQAAAAAAAAAAAAAAABcuwvmi011KPfKGly7C+aLTXUo98o/TPotv6uEsDSD2FO/g7qA5ykwAAAAAAAAAAAAAAAHG6p8Wc16le+xLz3ehGqfFnNepXvsS891/oV7O9vjiqNHv23OziALdRgAAAAAAAAAAAAAAANP4LvPLlfzOI7KpZaNOC7zy5X8ziOyqWW5nph0+n6Y75R+f8ASY3R3yAJViAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACV+GR49ZP7Mjta1UJX4ZHj1k/syO1rUeivvGndPc1sk6XG6WGgOprUAAAAAAAAAAAAAAAAXLsL5otNdSj3yhpcuwvmi011KPfKP0z6Lb+rhLA0g9hTv4O6gOcpMAAAAAAAAAAAAAAABxuqfFnNepXvsS893oRqnxZzXqV77EvPdf6Fezvb44qjR79tzs4gC3UYAAAAAAAAAAAAAAADT+C7zy5X8ziOyqWWj7gpYHE4ra1h8VatzNrB4S9cvVbuKmKqe4j6d9Uf8AKwXMtL5icfGr4Y75R2fTE4mN0cQBLMUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASvwyPHrJ/ZkdrWqhK/DI8esn9mR2taj0V9407p7mtknS43Sw0B1NagAAAAAAAAAAAAAAAC5dhfNFprqUe+UNLl2F80WmupR75R+mfRbf1cJYGkHsKd/B3UBzlJgAAAAAAAAAAAAAAAON1T4s5r1K99iXnu9CNU+LOa9SvfYl57r/Qr2d7fHFUaPftudnEAW6jAAAAAAAAAAAAAdo0FoLU+tsZ3nI8vqrs01bruKu/EsWvXV5+iN89D13b1uzRNdydUR1y8K7lNunyq51Q6u0rZnsa1VrLvWMu2v8IymrdPwvE0TvuU/7dHFNXrndHS3jZlsO0zpXvWOzamjO81p4+7vUf5NqfkW55Zjz1b58sbmsInM9LojXbwcf/aeEeP2TuMz3VzcPHbPCPF1bZvoTIdB5RXgMltV1XL0xVicTdmJu3qo5N8+SI3zuiOKN8+WZme0gh716u9XNy5OuZ605cuVXKpqrnXMgD1vAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASvwyPHrJ/ZkdrWqhK/DI8esn9mR2taj0V9407p7mtknS43Sw0B1NagAAAAAAAAAAAAAAAC5dhfNFprqUe+UNLl2F80WmupR75R+mfRbf1cJYGkHsKd/B3UBzlJgAAAAAAAAAAAAAAAON1T4s5r1K99iXnu9CNU+LOa9SvfYl57r/Qr2d7fHFUaPftudnEAW6jAAAAAAAAAf7s27l67RatW6rlyuYppopjfNUzyREeUH+HIZBkubZ/mdvLcmy+/jsXc/FtWad87vPPkiOmeKGvbMuD9nWcxazDVty5k2BndMYamI+FXI6Ynit/TvnohSWkdLZBpTLYy/IMssYKzy1zTG+u5Pnrqnjqn1yl8z0ow+F10WefV+I7evs+7FxmdWrPNt86r8MX2Z8HfC4bvWY64xEYq9xVRl+HrmLdM+auuOOr1U7o6ZhvWX4LB5dgrWCwGFs4XDWqe5t2bNEUUUR5oiOKH0Dn+OzLE46vyr1Wv+OqN0JfE4u9iatdyfAAfC+YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASvwyPHrJ/ZkdrWqhK/DI8esn9mR2taj0V9407p7mtknS43Sw0B1NagAAAAAAAAAAAAAAAC5dhfNFprqUe+UNLl2F80WmupR75R+mfRbf1cJYGkHsKd/B3UBzlJgAAAAAAAAAAAAAAAON1T4s5r1K99iXnu9CNU+LOa9SvfYl57r/Qr2d7fHFUaPftudnEAW6jAAAAAAB2TQ2iNS60x3wXIctuX6aZ3XcRX8Wza/Srni+iN8z5IlTGzLYTpvTPesfnvcZ5mlO6qO+Uf9Pan5NE/jTHnq9e6GRmWd4XL41Vzrq2R6/67XwYvMbOFjVVOudkMI2Z7INVa1qt4qLE5ZlNUxM43E0THdR/t0ctfr4o6VP7ONmGldDWqbmW4P4TmPc7q8fiYiq7Pn7nyUR0R9My7rERERERERHJEP655mef4rH66ZnyaNkcZ6+7+ErjM0vYrkmdVOyOO0AYbNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEr8Mjx6yf2ZHa1qoSvwyPHrJ/ZkdrWo9FfeNO6e5rZJ0uN0sNAdTWoAAAAAAAAAAAAAAAAuXYXzRaa6lHvlDS5dhfNFprqUe+Ufpn0W39XCWBpB7Cnfwd1Ac5SYAAAAAAAAAAAAAAADjdU+LOa9SvfYl57vQjVPizmvUr32Jee6/0K9ne3xxVGj37bnZxAFuowAAf6t0V3LlNu3TVXXVMRTTTG+ZmeSIhs+zPYDn+e96x+qKrmSZfO6e8zT/1VyP0Z4rfrq4/kvkxmOw+Do8u/Vqj8zuh6MRibWHp8q5OpkeSZTmed5jby7KMDiMdi7n4tqzRNVXr6I88zxQoXZlwdrdvvWY66xEXa+KqMtw1fxY6LlyOX1U//aW16N0jp7SGWxgMgy2zhKJiO+XIjfcuzHlrrnjqnl6I8m5zqBzPSu/f10YbmU7eufDs5f5TGMzu5d5tnmxt6/6fNlmAwOV4G1gctwljCYW1Hc27NmiKKKY6Ih9IJOZmqdcsKZmZ1yAPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEr8Mjx6yf2ZHa1qoSvwyPHrJ/ZkdrWo9FfeNO6e5rZJ0uN0sNAdTWoAAAAAAAAAAAAAAAAuXYXzRaa6lHvlDS5dhfNFprqUe+Ufpn0W39XCWBpB7Cnfwd1Ac5SYAAAAAAAAAAAAAAADjdU+LOa9SvfYl57vQjVPizmvUr32Jee6/wBCvZ3t8cVRo9+252cQHYNFaN1HrHMfgWQZbdxM0zHfb0/FtWony11zxR6uWd3FErS5dotUzXXOqI65UNddNEeVVOqHX2gbNdkuq9b1W8Th8P8A4fldU8eOxNMxRMfIp5a/o4umG7bM9gmndPd6x+o5t55mVO6qKKqf+mtT0UT+P66uLohsdFNNFMUUUxTTTG6IiN0RCLzPS6mnXbwca5+KfV2R4/ZPYzPYjm4eNf8AM8HRdm2yrSmh6KL+CwvwzM4jdVjsTEVXOnuI5KI9XH55l3sENiMRdxFc3LtUzP8AKbu3a7tXlVzrkAel6wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABK/DI8esn9mR2taqEr8Mjx6yf2ZHa1qPRX3jTunua2SdLjdLDQHU1qAAAAAAAAAAAAAAAALT4N+cYXNdkmUW7Fymb2BpqwuIojloqpqmY3+umaZ+lFjsGh9Zah0Zmc4/T+Pqw1Ve6L1uYiq3eiPJVTPFPl4+WN87phi57ldWZYb9OidVUTrjYz8ywU4uz5NM6pjlhfQk6OEnrqIiJyvTk9M4e9x/wD9X98JPXX5K059Xvf1UR6J5jsj7pvzHi9kfdWAk/wk9dfkrTn1e9/VPCT11+StOfV739U9E8x2R9zzHi9kfdWAk/wk9dfkrTn1e9/VPCT11+StOfV739U9E8x2R9zzHi9kfdWAk/wk9dfkrTn1e9/VPCT11+StOfV739U9E8x2R9zzHi9kfdWAk/wk9dfkrTn1e9/VPCT11+StOfV739U9E8x2R9zzHi9kfdWAk/wk9dfkrTn1e9/VPCT11+StOfV739U9E8x2R9zzHi9kfdWAk/wk9dfkrTn1e9/VPCT11+StOfV739U9E8x2R9zzHi9kfdWAk/wk9dfkrTn1e9/VPCT11+StOfV739U9E8x2R9zzHi9kfdWAk/wk9dfkrTn1e9/Vf2jhI67rqimnKNO1VTO6IjDX5mZ/evz0TzHZH3PMeL2R91FbUM5wuQ7Ps8zLF3KKKaMHcotxV/ruVUzTRT9NUxCFcpy3MM3x9rAZXgr+MxV2d1FmzRNdU/RHvUHg9EbS9rd7D5hr7H1ZJklE98s4K3b7iud8ctNueSeX41yZmN/FG5tmidGac0dl/wADyDLbWG7qIi7en4127Pnqrnjn1ckeSIfdg8wsZFZqtxMXLtU8ur9sdvX2Ppw+Kt5ZbmiJ8qudnqjtYlsy4O3/AOLMddX93ljLcNc/4uXI91PR8byKCyfLMuyfL7WX5VgrGCwlqN1FmzRFNMfRHl6fK+sTuPzTE4+ryr1XJs6o7P8ASycVjb2JnXcns6gBnvlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEr8Mjx6yf2ZHa1qoS1wyrVyNaZLemiYt1ZdNNNXkmYuVTMf8AMftUeivvGndPc1sk6XG6WFAOprUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHOaO0nqDV2ZRgMgy29i7kTHfK4jdbtRPlrqnipj18vk3qU2ZbAMhyLvWYaprt53mEccWN0/Bbc+qeO5+txfJ8rKzHOcLl8f8ASrXVsj1/12vhxeYWcLHPnl2dbCdm2yzVeublF7A4X4Hlm/dXj8TE02+Xj7iOWueXk4vPMKf2abI9KaIpt4mzh/8AEc1p45x2JpiaqZ/26eSj6OPzzLv9uii1bpt26KaKKIimmmmN0REckRD/AE55mekOKx2umJ8mjZHGevu/hK4zNb2J5vqp2RxAGCzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0za5s/y7aDp6jAYq9OFxmHqm5g8VTT3U26pjdMTHlpndG+N8ckT5Hcx7bF+5h7kXbc6qo9Tzt3KrVcV0TqmEJbQdneqdD4nuc6wEzhaqu5t42xvrsXP1t3FPRVET0OpPRXF4bD4zDXMLi7FrEWLtM03LV2iKqK6Z5YmJ4phhW03g85dmHfcx0Xfoy7EzvqnA3pmbFc/Iq45ononfH6ML7LNLbd3VRi48mdsert2d25UYPPKK+bf5J29X9JfHKal0/nWmszry3PMuv4HE0/6btPFVHnpnkqjpiZhxaxorprpiqmdcS36aoqjXE64AHk/QAAAAAAAAAAAAAAAAAAAAAAAAI453Q1zZnsK1NqfvWOzuK8iyurdVE3aP+oux8mifxY6at3kmIl8uLxtjCUeXeq1R/vVtem/iLdinyrk6oZZlmAxuZ461gcuwl/F4q9V3NuzZomuuqeiIb7sy4O969FrMdc35s2+KqMuw9fx56Llccnqp4+mG36F0NpnReB+DZDl1FmuqN13EV/GvXf0q54/ojdHQ7Kg8z0svXtdGFjyadvX/AF3pjGZ5cuc2zyRt6/6fDkeUZXkeW28uyfAYfA4S3+Las0RTG/zz5588zxy+4EhVVNU+VVOuWFMzM65AH4/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHFao05kmp8sqy3PcusY7DTxxTcjjonz01Rx0z0xMJw2mcHrNMt77mGjb1eZ4SN9U4O7MRiKI+TPJXH7J9apBp5dm+Ky+r/lVybJ9X+3PswmPvYWeZPJs6nnTibF/C4i5h8TZuWL1uqaa7dymaaqZjliYnjiX5rq2h7N9K64w8/4vgYt42Kd1vHWN1F+jzcf+qOirfCYdpuxnVOje+42xbnOMop3z8Kw9E91bp/3KOOafXG+OmOR0LLNI8LjdVFXMr2T17p/0qrB5tZxPNnm1bJ4SzMBQtUAAAAAAAAAAAAAAAAAABzOk9MZ9qrM6cvyHLb2Nvz+NNEbqLceeqqeKmPXLwruU26ZqrnVEdcvGqqKY8qqdUOGd12c7MdVa5vU15Zg/g+X91uuY/Eb6bMefufLXPRTv6dzddmfB9ybJ+9Zhq67bzjGxuqjC0b4w1uenfx3Pp3R0S22xatWLNFixbotWrdMU0UUUxFNMRyRERyQjcz0tot67eEjXO2fV2R1/wC9bAxme0082xGudvUzvZlse0rorveM71/iub08fw3E0R8Sf9ujko9fHVy8bRwQuJxV7FV/qXqpqn+U1evXL1XlXJ1yAPQ9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADKdpuw/TGq4u47K6KckzarfPfbFH+Tdq+Xbji/Wp3Tx753pk19oHU+icZ3nPMvqpsVVdzaxdr49i76qvJPRO6eheL8MfhMJj8HdweOw1nFYa7T3Ny1eoiuiuPNMTxSo8s0lxWC1UV8+jZPrjdPi1sHm97D82rnU/7redgprabweMHi5u5joi/Tg7076py+/XM2qp+RXPHT6p3x0xCdtQZJm+n8yry3OsvxGBxVHLbvU7t8eeJ5JjpjfDoOX5thcfTrs1cuyfXH+/hVYXHWcVGu3PLs63HANJ9YAAAAAAAAAAAA/fA4TF4/GWsHgcNexWJu1dzbtWaJrrrnzREcctP2ZbD9T6rm1js0oqyTKat099v0f512n5FueP8AWq3Rx743qb0DoHTGicH3nI8vppv1U9zdxd349+766vJHRG6OhOZnpLhcFroo59eyPVG+WTjM3s4fm086r/dbDtmXB4xmLi1mOt79WDszuqjL7FcTdqj5dccVPqjfPTEqJ09kmUafy2jLcly/D4HC0clu1Tu3z55nlmemd8uRHPswzbFY+rXeq5NkeqP9/KVxWOvYqddyeTZ1ADNfIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOG1bpfIdVZZVl+fZbZxtifxZqjdXbnz01Rx0z6pcyPKi5VbqiqidUx1w/aappnyqZ1SlXaZwfc5yfvuYaRu3M4wMb6pwtW6MTbjo3cVz6N09EsSvWrlm9XZvW67dyiqaa6K6d1VMxyxMTyS9F3Sto2zHSmubNVeZ4P4PmHc7rePw+6m9Hm7ryVx0Vb+jcsss0trt6reLjXG2PX2x1/71qDB57VTzb8a429aGho203Y9qrRU3MX3n/Fcpp4/huGon4kf7lHLR6+OOlnK7w2Ks4mj9SzVFUfwpbN63ep8q3OuAB73tAAAAByul9OZ3qfM6ctyLLr+OxM8c0244qI89VU8VMdMzCjtmfB6yvLe9ZhrK9RmeLjdVGDtTMYeiflTy1z+yPWzMxzfC5fT/wBauXZHr/298eLx9nCxz55dnWwzZ5s31VrjER/hGBmjBRVuuY6/vosUefj/ANU9FO+VPbMtjGltG96xt+3GcZvTun4ViKI7m3V57dHHFPrnfPTHI0jDWLGFw9vD4azbsWbdMU0W7dMU00xHJERHFEP0c9zPSPFY3XRTzKNkde+f9CVxmbXsTzY5tOyOMgCeZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABPHG6WR7TNhWmdTd9x2SRRkWaVb6pm1R/092flUR+LPTTu8szEtcH04TG38JX+pZq1T/vXte6xiLliryrc6pQTrrQ+ptF474Nn2XV2aKp3WsRR8azd/Rrji+id09Drb0RzPAYLM8DdwOY4Sxi8Ldp7m5ZvURXRVHTEsC2m8Hezem7mOhr8Wa+OqcuxFfxJ6Ldc8nqq4umF7lmllm9qoxUeTVt6v67lNg88t3Obe5J29X9JrHI53kWc5Jj5wGbZXi8FiYq7nvd61NM1T0f8AdHTG/e0DZpsT1Xq2q3i8daqyTKp45xGJtz3y5HyLc7pn1zujzTPIpr+Ow+Ht/q3K4inbt3bexsXcTatUeXXVEQzPCYbEYvE28LhLF3EX7tUU27Vqiaq66p5IiI45luuzLg85jmHesx1pfqy7DTuqjA2Zib9cfLq5KI6I3z+jLc9n2zvS2h8N3OS4CJxVVPc3Mbf3V37n63kjopiI6HbULmelty7rt4SPJjbPr7NnfuTeMzyuvm2OSNvX/Ti9NafyXTWWUZbkeXWMDhqf9Nqnjqnz1Ty1T0zMy5QEfXXVXVNVU65lgVVTVOuZ1yAPF+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+fLMVRjstwuOtTE28RZou0zHJuqiJj3voJiYnVJMauQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHz5niqMDluKx12Yi3h7Nd2qZ5N1MTM+4e+1hrt6NdFOt7KLNdzlpjW6JwctQUai2O5Df7uKr2DsfAb0b9801WfiRv6Zpiir9ZoaRuBlrWjKtTYzR2OvRRh823XsJNVW6KcRRHHT+vT/zRTHlVy0M9wU4THV06uSeWN0+HqfXmeHmxiaqeqeWO0AZD4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGecI3UFGndjufX+7im9jLHwGzG/dNVV74k7umKZrq/VGE8M3WtGa6mwejsDeivD5TvvYuaat8VYiuOKn9Sn/muqPIOpaL4H/x8DFVcctfL2dXj2rTJsN+lhomqOWrl8GCYHFYnA42xjcHersYnD3Kbtq5RO6qiumd8TE+eJheWwvaRgtoukqMTVVbtZzhIi3mOGpnd3NXkuUx/2Vbt8ead8eTegdzmh9VZ1ozUeHz3IsVNjFWZ3VUzx0XaJ5aK48tM/wDqY3TES+nO8opzKzqjkrj1Twn+Je7McBGLt6o/dHq8Ho8M92PbV9O7Rcuppw1ynBZzbo34nLrlXx6fPVRP+ujpjjjyxHE0JyrEYe7h7k27tOqYRN21XaqmiuNUwAPS9YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAz3bptIwWzrSVeJpqt3c5xcTby7DVTv7qry3Ko/7Kd++fPO6PLvNsO1fTuzrLqqcTcpxuc3KN+Gy63V8erzVVz/AKKOmeOfJE8aI9caqzrWeo8Rnue4qb+KvTuppjiotURyUUR5KY/9zO+ZmVPkGQV42uL16NVuP/1/W2f9GzleV1YiqLlyOZ3/ANOJx2KxOOxt/G4y9XfxOIuVXbtyud9VddU75mZ88zI/EdOiIiNULKI1AD9H7YHF4rA4u1jMFiL2GxNmqK7d21XNFdFUckxMccS3vZxwms9yq1awOscBGdYendTGLsTFvE0x8qPxbn/jPnmQfFjcvw2Np8m/Rr747Xz4jC2cRGq5TrbtpXbTs21FRR3jUuFwN6qI32cwn4NVTPm31fFmfVMu94HHYLHWou4HGYfFW5jfFVm7FcftiQc3z3KrOAr1Wpnt/wD4kcywNvDVaqJl9ACeZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+fHY7BYG1N3HYzD4W3Eb5qvXYoj9syDztURXXFMvKinyqoiXRNVbadm2naK+/wCpcLjr1MTus5fPwmqqfNvp+LE+uYYTtH4TWe5rau4HR2AjJcPVvpnF35i5iao+TH4tv/ynzTAOk5Vo7gaaKb1VPlT/AD6vtyfnWrsDlOGimLkxrn+WCY7F4rHYu7jMbiL2JxN6qa7l27XNdddU8szM8cy/EFTEREaobcRqAH6P/9k=";
 
@@ -86,7 +86,47 @@ const StaticItem = ({ children }) => (
 
 export default function BrandBuildingFlow() {
   const [activeCard, setActiveCard] = useState(null);
+  const [activeSection, setActiveSection] = useState("phase-1");
   const toggle = (id) => setActiveCard(activeCard === id ? null : id);
+
+  const navItems = [
+    { id: "foundation", label: "Foundation" },
+    { id: "phase-1", label: "Research & Analysis" },
+    { id: "phase-2", label: "Brand Strategy" },
+    { id: "phase-3", label: "Brand Identity" },
+    { id: "contact", label: "Get in Touch" },
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navItems.map(item => ({
+        id: item.id,
+        el: document.getElementById(item.id),
+      })).filter(s => s.el);
+      
+      if (sections.length === 0) return;
+      
+      const scrollY = window.scrollY + 120;
+      let current = sections[0].id;
+      
+      for (const section of sections) {
+        if (section.el.offsetTop <= scrollY) {
+          current = section.id;
+        }
+      }
+      
+      // Only override to contact if truly at bottom
+      const atBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 50);
+      if (atBottom) current = "contact";
+      
+      setActiveSection(current);
+    };
+
+    // Delay initial check to let content render
+    const timer = setTimeout(handleScroll, 100);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", handleScroll); clearTimeout(timer); };
+  }, []);
 
   const cardBase = "group cursor-pointer transition-all duration-300 rounded-lg p-4 border";
   const cardActive = (id) => activeCard === id
@@ -106,29 +146,50 @@ export default function BrandBuildingFlow() {
         .clickable-card-active { border-color: #82FF41; background: #1a1a1a; box-shadow: 0 4px 12px rgba(130,255,65,0.1); }
         .clickable-item { border-color: #404040; background: #111; }
         .clickable-item:hover { border-color: rgba(130,255,65,0.5); background: #161616; }
+        .nav-item { color: #666; }
+        .nav-item:hover { color: #999; }
+        .nav-item-active { color: #82FF41; }
       `}</style>
+
+      {/* Sticky Nav */}
+      <div className="sticky top-0 z-50 border-b border-neutral-800" style={{ background: "rgba(10,10,10,0.9)", backdropFilter: "blur(12px)" }}>
+        <div className="max-w-4xl mx-auto px-6 py-3 flex items-center gap-6 overflow-x-auto">
+          <img src={LOGO_SRC} alt="berndt ad-venture" className="w-7 h-7 rounded flex-shrink-0" />
+          {navItems.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={(e) => { e.preventDefault(); document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
+              className={`text-[11px] font-mono uppercase tracking-wider whitespace-nowrap transition-colors duration-300 ${activeSection === item.id ? "nav-item-active" : "nav-item"}`}
+              style={{ textDecoration: "none" }}
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </div>
 
       <div className="max-w-4xl mx-auto px-6 py-12">
 
-        {/* Header with Logo */}
+        {/* Header */}
         <div className="text-center mb-16">
-          <img src={LOGO_SRC} alt="berndt ad-venture" className="w-12 h-12 mx-auto mb-4 rounded-lg" />
-          <div className="text-xs font-mono uppercase tracking-[0.3em] mb-4" style={{ color: "#82FF41" }}>berndt ad-venture</div>
-          <h1 className="text-3xl font-bold mb-3">Agentic Brand Building Workflow</h1>
-          <p className="text-neutral-500 text-sm max-w-xl mx-auto">
+          <div className="text-xs font-mono uppercase tracking-[0.3em] mb-4" style={{ color: "#82FF41" }}>berndt ad-venture LLC</div>
+          <h1 className="text-3xl font-bold mb-2">Agentic Brand Building Workflow</h1>
+          <div className="mb-5"><span className="px-2 py-px text-[9px] font-mono uppercase tracking-wider rounded" style={{ background: "rgba(130,255,65,0.15)", color: "#82FF41", border: "1px solid rgba(130,255,65,0.3)" }}>Beta</span></div>
+          <p className="text-neutral-400 text-lg font-light max-w-2xl mx-auto leading-relaxed">
             An agentic workflow with human quality gates — where AI-powered intelligence meets two decades of strategic experience and taste. Every phase is machine-accelerated, every decision is human-curated.
           </p>
         </div>
 
         {/* Foundation */}
-        <div className="mb-4 rounded-xl p-6 border border-neutral-800" style={{ background: "#0f0f0f" }}>
+        <div id="foundation" className="mb-4 rounded-xl p-6 border border-neutral-800" style={{ background: "#0f0f0f" }}>
           <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">The Foundation</div>
-          <h2 className="text-lg font-bold mb-4">Three Goals. Every Decision.</h2>
+          <h2 className="text-lg font-bold mb-4">How to build and grow any brand.</h2>
           <div className="grid grid-cols-3 gap-3">
             {[
-              { name: "Relevance", desc: "Connects to real human needs, motivations, and cultural context" },
-              { name: "Distinctiveness", desc: "Instantly recognisable through ownable assets and codes" },
-              { name: "Salience", desc: "Comes to mind first when decisions are made" },
+              { name: "Relevance", desc: "The brand connects to real human needs, motivations, and cultural context — it matters to the people it serves." },
+              { name: "Distinctiveness", desc: "The brand is instantly recognisable through ownable assets, codes, and expressions that set it apart." },
+              { name: "Salience", desc: "The brand comes to mind first in buying situations — it occupies mental availability when decisions are made." },
             ].map((item, i) => (
               <StaticItem key={i}>
                 <div className="text-sm font-semibold mb-1" style={{ color: "#82FF41" }}>{item.name}</div>
@@ -138,13 +199,11 @@ export default function BrandBuildingFlow() {
           </div>
         </div>
 
-        <div className="flex justify-center py-1">
-          <div className="text-[10px] text-neutral-600 font-mono tracking-wider">INFORMS EVERYTHING ↓</div>
-        </div>
+        <Arrow label="informs everything" />
 
-        {/* Phase 0 + 1: Research & Analysis */}
-        <div className="mb-4 rounded-xl p-6 border" style={{ background: "#0f0f0f", borderColor: "#82FF41" }}>
-          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 0 + Phase 1</div>
+        {/* Phase 1: Research & Analysis */}
+        <div id="phase-1" className="mb-4 rounded-xl p-6 border" style={{ background: "#0f0f0f", borderColor: "#82FF41" }}>
+          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 1</div>
           <h2 className="text-lg font-bold mb-1">Research & Analysis</h2>
           <p className="text-xs text-neutral-500 mb-6">Starting inside-out with the client, then looking outside-in at market, people, and culture</p>
 
@@ -178,8 +237,8 @@ export default function BrandBuildingFlow() {
             <div className="max-w-lg mx-auto">
               <div className={`${cardBase} ${cardActive("analyzer")}`} onClick={() => toggle("analyzer")}>
                 <div className="flex items-center justify-between mb-1">
-                  <div className="text-sm font-bold text-white flex items-center">Discovery Analyzer{activeCard !== "analyzer" && <ExpandHint />}</div>
-                  <SkillBadge name="brand-discovery-analyzer" />
+                  <div className="text-sm font-bold text-white flex items-center">Brand Analyzer{activeCard !== "analyzer" && <ExpandHint />}</div>
+                  <SkillBadge name="brand-analyzer" />
                 </div>
                 {activeCard === "analyzer" && <p className="text-neutral-400 text-xs mt-2 leading-relaxed animate-fadeIn">Synthesizes the client's questionnaire answers and documents into a structured Needs Assessment: business portrait, tensions, gaps, and hypotheses for all four C's. The first output of the pipeline — turning raw client input into strategic intelligence.</p>}
               </div>
@@ -201,7 +260,7 @@ export default function BrandBuildingFlow() {
               <DirectionBadge text="← Outside In" />
               <span className="text-[10px] text-neutral-600">The 4C deep dive: Company, Category, Consumer, and Culture</span>
             </div>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
                 { id: "company", label: "Company", question: "Who are you?", desc: "The strategic reality behind the business — heritage, model, financials, leadership, ambition, strengths, blind spots. Directly informed by the client's questionnaire answers and Needs Assessment.", skill: "company-checker" },
                 { id: "category", label: "Category", question: "Where do you play?", desc: "The competitive landscape, category conventions, unwritten rules, trends, and white space. Where conventions can be broken and defensible territory claimed.", skill: "category-checker" },
@@ -232,8 +291,8 @@ export default function BrandBuildingFlow() {
           <p className="text-xs text-neutral-500 mb-4">Where four perspectives become one strategic direction</p>
           <div className={`${cardBase} ${cardActive("synthesis")}`} onClick={() => toggle("synthesis")}>
             <div className="flex items-center justify-between mb-1">
-              <div className="text-sm font-bold text-white flex items-center">4C Synthesis{activeCard !== "synthesis" && <ExpandHint />}</div>
-              <SkillBadge name="4c-synthesis" />
+              <div className="text-sm font-bold text-white flex items-center">4C Synthesizer{activeCard !== "synthesis" && <ExpandHint />}</div>
+              <SkillBadge name="4c-synthesizer" />
             </div>
             {activeCard === "synthesis" && <p className="text-neutral-400 text-xs mt-2 leading-relaxed animate-fadeIn">Weaves all four dossiers into a unified strategic brief: cross-cutting patterns (alignment, conflict, gaps), strategic territories, tensions to navigate, and Phase 2 hypotheses. This is where intelligence becomes strategy.</p>}
           </div>
@@ -253,9 +312,9 @@ export default function BrandBuildingFlow() {
 
         <Arrow label="strategic territories & hypotheses" />
 
-        {/* Phase 2a — Brand Strategy with Territory Routes */}
-        <div className="mb-4 rounded-xl p-6 border" style={{ background: "#0f0f0f", borderColor: "#82FF41" }}>
-          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 2a</div>
+        {/* Phase 2 — Brand Strategy with Territory Routes */}
+        <div id="phase-2" className="mb-4 rounded-xl p-6 border" style={{ background: "#0f0f0f", borderColor: "#82FF41" }}>
+          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 2</div>
           <h2 className="text-lg font-bold mb-1">Brand Strategy</h2>
           <p className="text-xs text-neutral-500 mb-4">From insight to direction — From insight to direction</p>
 
@@ -264,7 +323,7 @@ export default function BrandBuildingFlow() {
               <div className="text-sm font-bold text-white flex items-center">Brand Strategy Writer{activeCard !== "strategy-writer" && <ExpandHint />}</div>
               <SkillBadge name="brand-strategy-writer" />
             </div>
-            {activeCard === "strategy-writer" && <p className="text-neutral-400 text-xs mt-2 leading-relaxed animate-fadeIn">Takes the 4C Synthesis and develops each of the eight strategic dimensions into full content — mission, manifesto, positioning, value propositions, tone of voice with 6–9 example headlines+copy. Every piece tested against three quality gates: Relevance, Distinctiveness, Salience. If a competitor could say it, it gets rewritten.</p>}
+            {activeCard === "strategy-writer" && <p className="text-neutral-400 text-xs mt-2 leading-relaxed animate-fadeIn">Takes the 4C Synthesizer output and develops each of the eight strategic dimensions into full content — mission, manifesto, positioning, value propositions, tone of voice with 6–9 example headlines+copy. Every piece tested against three quality gates: Relevance, Distinctiveness, Salience. If a competitor could say it, it gets rewritten.</p>}
           </div>
 
           {/* Territory Routes */}
@@ -320,14 +379,14 @@ export default function BrandBuildingFlow() {
 
         {/* Phase 2b — Landing Page from winning territory */}
         <div className="mb-4 rounded-xl p-6 border border-neutral-800" style={{ background: "#0f0f0f" }}>
-          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 2b</div>
+          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 2</div>
           <h2 className="text-lg font-bold mb-1">Strategy in Context</h2>
           <p className="text-xs text-neutral-500 mb-4">The winning brand strategy brought to life as a customer-facing landing page</p>
 
           <div className={`${cardBase} ${cardActive("landing-page")} mb-4`} onClick={() => toggle("landing-page")}>
             <div className="flex items-center justify-between mb-1">
-              <div className="text-sm font-bold text-white flex items-center">Strategy Landing Page Builder{activeCard !== "landing-page" && <ExpandHint />}</div>
-              <SkillBadge name="strategy-landing-page" />
+              <div className="text-sm font-bold text-white flex items-center">Landing Page Creator{activeCard !== "landing-page" && <ExpandHint />}</div>
+              <SkillBadge name="landing-page-creator" />
             </div>
             {activeCard === "landing-page" && <p className="text-neutral-400 text-xs mt-2 leading-relaxed animate-fadeIn">Translates the winning Brand Strategy into a customer-facing landing page mock-up with real copy in the actual tone of voice. Includes a manifesto film placeholder with voiceover script. The page follows: hero/positioning, problem, value proposition, proof, manifesto, CTA. Built for strategic validation and message testing — not a final design.</p>}
           </div>
@@ -356,7 +415,7 @@ export default function BrandBuildingFlow() {
         </div>
 
         {/* Phase 3 — Brand Identity */}
-        <div className="mb-4 rounded-xl p-6 border" style={{ background: "#0f0f0f", borderColor: "#82FF41" }}>
+        <div id="phase-3" className="mb-4 rounded-xl p-6 border" style={{ background: "#0f0f0f", borderColor: "#82FF41" }}>
           <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 3</div>
           <h2 className="text-lg font-bold mb-1">Brand Identity</h2>
           <p className="text-xs text-neutral-500 mb-4">From strategy to expression — only after strategic direction is validated. Distinctiveness is the dominant force.</p>
@@ -409,35 +468,67 @@ export default function BrandBuildingFlow() {
         </div>
 
         {/* Skill Map */}
-        <div className="rounded-xl p-6 border border-neutral-800" style={{ background: "#0f0f0f" }}>
+        <div className="rounded-xl p-6 border border-neutral-800/50" style={{ background: "#0c0c0c" }}>
           <div className="text-xs font-mono uppercase tracking-widest mb-3 text-neutral-500">Skill Map — What Powers Each Phase</div>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-0">
             {[
-              { skill: "brand-discovery-analyzer", phase: "Questionnaire → Company C" },
+              { skill: "brand-analyzer", phase: "Questionnaire → Company C" },
               { skill: "company-checker", phase: "Phase 1: Company (inside-out)" },
               { skill: "category-checker", phase: "Phase 1: Category (outside-in)" },
               { skill: "consumer-checker", phase: "Phase 1: Consumer (outside-in)" },
               { skill: "culture-checker", phase: "Phase 1: Culture (outside-in)" },
-              { skill: "4c-synthesis", phase: "Phase 1 → 2: The Bridge" },
+              { skill: "4c-synthesizer", phase: "Phase 1 → 2: The Bridge" },
               { skill: "brand-strategy-writer", phase: "Phase 2a: Brand Playbook" },
-              { skill: "strategy-landing-page", phase: "Phase 2b: Strategy in context" },
+              { skill: "landing-page-creator", phase: "Phase 2b: Strategy in context" },
               { skill: "brand-identity-prompter", phase: "Phase 3: Visual & sonic briefs" },
               { skill: "brand-building-framework", phase: "Methodology backbone" },
               { skill: "presentation-maker", phase: "Client-facing decks" },
               { skill: "image-prompt-generator", phase: "Photography prompts" },
             ].map((s, i) => (
-              <div key={i} className="flex items-center justify-between py-1.5 border-b border-neutral-800">
+              <div key={i} className="flex items-center justify-between py-2.5 border-b border-neutral-800/50">
                 <SkillBadge name={s.skill} />
-                <span className="text-xs text-neutral-500">{s.phase}</span>
+                <span className="text-[11px] text-neutral-500 text-right ml-3">{s.phase}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-center gap-3 mt-12">
-          <img src={LOGO_SRC} alt="berndt ad-venture" className="w-6 h-6 rounded" />
-          <span className="text-xs text-neutral-600 font-mono">berndt ad-venture LLC — Agentic Brand Building Workflow v6.0</span>
+      </div>
+      {/* End of dark section */}
+
+      {/* Get in Touch */}
+      <div style={{ background: "#0a0a0a" }}>
+        <div className="max-w-4xl mx-auto px-6">
+          <div id="contact" className="mt-12 rounded-xl p-6 border border-neutral-800/50" style={{ background: "#0c0c0c" }}>
+            <div className="text-xs font-mono uppercase tracking-widest mb-4 text-neutral-500">Get in Touch</div>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { label: "Email", value: "mail@janberndt.com", href: "mailto:mail@janberndt.com", icon: (<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1" stroke="#82FF41" strokeWidth="1.2"/><path d="M1 4L8 9L15 4" stroke="#82FF41" strokeWidth="1.2"/></svg>) },
+                { label: "Phone / WhatsApp", value: "+49 151 12 11 2000", href: "https://wa.me/4915112112000", icon: (<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 11.5C14 12 13.5 13.5 12 14C10.5 14.5 7 13 4.5 10.5C2 8 1 5 1.5 3.5C2 2 3.5 1.5 4 1.5L6 5L4.5 7C4.5 7 5.5 9 7 10.5C8.5 12 9.5 11.5 9.5 11.5L11.5 10L14 11.5Z" stroke="#82FF41" strokeWidth="1.2" strokeLinejoin="round"/></svg>) },
+                { label: "Website", value: "janberndt.com", href: "https://janberndt.com", icon: (<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#82FF41" strokeWidth="1.2"/><path d="M1.5 8H14.5M8 1.5C6 4 6 12 8 14.5M8 1.5C10 4 10 12 8 14.5" stroke="#82FF41" strokeWidth="1.2"/></svg>) },
+                { label: "LinkedIn", value: "linkedin.com/in/jan-berndt", href: "https://linkedin.com/in/jan-berndt", icon: (<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="#82FF41" strokeWidth="1.2"/><path d="M5 6.5V11M8 11V8.5C8 7.5 8.5 6.5 10 6.5C11 6.5 11 7.5 11 8.5V11M5 4.5V4.51" stroke="#82FF41" strokeWidth="1.2" strokeLinecap="round"/></svg>) },
+                { label: "Photography", value: "janberndt.myportfolio.com", href: "https://janberndt.myportfolio.com", icon: (<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1" stroke="#82FF41" strokeWidth="1.2"/><circle cx="8" cy="8" r="2.5" stroke="#82FF41" strokeWidth="1.2"/><path d="M5 3L6 1H10L11 3" stroke="#82FF41" strokeWidth="1.2"/></svg>) },
+                { label: "Location", value: "Bali, Indonesia (+7 hours CET)", href: null, icon: (<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 14S3 9.5 3 6.5C3 3.5 5.2 1.5 8 1.5C10.8 1.5 13 3.5 13 6.5C13 9.5 8 14 8 14Z" stroke="#82FF41" strokeWidth="1.2"/><circle cx="8" cy="6.5" r="1.5" stroke="#82FF41" strokeWidth="1.2"/></svg>) },
+              ].map((item, i) => (
+                <a key={i} href={item.href || undefined} target={item.href ? "_blank" : undefined} rel="noopener noreferrer" className="flex items-start gap-3 p-3 rounded-lg border transition-all duration-300 cursor-pointer clickable-item" style={{ textDecoration: "none" }}>
+                  <div className="mt-0.5">{item.icon}</div>
+                  <div>
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-0.5">{item.label}</div>
+                    <div className="text-sm text-neutral-300">{item.value}</div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="flex flex-col items-center gap-2 mt-12 pb-12">
+            <div className="flex items-center gap-3">
+              <img src={LOGO_SRC} alt="berndt ad-venture" className="w-6 h-6 rounded" />
+              <span className="text-xs text-neutral-600 font-mono">Agentic Brand Building Workflow Beta v6.0</span>
+            </div>
+            <div className="text-[9px] text-neutral-700 font-mono uppercase tracking-wider">© {new Date().getFullYear()} berndt ad-venture LLC. All rights reserved. Proprietary methodology.</div>
+          </div>
         </div>
       </div>
     </div>
