@@ -7,7 +7,7 @@ const LOGO_SRC = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
 const strategyItems = [
   { id: "s-mission", name: "Mission & Vision", desc: "Why the brand exists and where it's going. One sentence each. The north star that aligns every decision — sharp enough to guide hard choices." },
   { id: "s-manifesto", name: "Manifesto", desc: "What the brand believes in. 60–150 words. A declaration of conviction that draws a line — includes a manifesto film voiceover script ready for production." },
-  { id: "s-positioning", name: "Brand Positioning", desc: "A distinct, defensible space in people's minds. Tested with the swap test: if a competitor could say it, it gets rewritten. 2–3 territory options presented." },
+  { id: "s-positioning", name: "Positioning", desc: "A distinct, defensible space in people's minds. Tested with the swap test: if a competitor could say it, it gets rewritten. 2–3 territory options presented." },
   { id: "s-tagline", name: "Tagline", desc: "The brand compressed into a single line. Memorable, ownable, and impossible to confuse with a competitor. Lives on the Brand on a Page and across all key touchpoints." },
   { id: "s-cvp", name: "Customer Value Prop", desc: "The promise to customers: what they get, why it matters, and the 'only we' statement that no competitor can claim. Core promise + 3 proof points." },
   { id: "s-evp", name: "Employer Value Prop", desc: "The promise to talent: what the brand stands for as a workplace. Grounded in real company culture, not aspirational posters." },
@@ -203,7 +203,7 @@ export default function BrandBuildingFlow() {
 
         {/* Phase 1: Research & Analysis */}
         <div id="phase-1" className="mb-4 rounded-xl p-6 border" style={{ background: "#0f0f0f", borderColor: "#82FF41" }}>
-          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 1</div>
+          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-white">Phase 1</div>
           <h2 className="text-lg font-bold mb-1">Research & Analysis</h2>
           <p className="text-xs text-neutral-500 mb-6">Starting inside-out with the client, then looking outside-in at market, people, and culture</p>
 
@@ -216,11 +216,11 @@ export default function BrandBuildingFlow() {
 
             <div className="grid grid-cols-2 gap-2 mb-3">
               {[
-                { id: "questionnaire", label: "Brand Discovery Questionnaire", desc: "16 questions across 4 categories — the client's own words about their business, competition, ambition, and identity. This is the primary fuel for the Company C." },
-                { id: "uploads", label: "Client Documents & Studies", desc: "Existing playbooks, pitch decks, research, studies — anything the client shares that deepens our understanding." },
+                { id: "questionnaire", label: "Brand Discovery Questionnaire", desc: "16 carefully crafted questions designed to surface what most briefs miss — the hidden tensions, unspoken ambitions, and real competitive edges beneath the surface. Built on 20 years of strategy work. This is the internal fuel for everything that follows.", icon: (<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="1" width="10" height="14" rx="1" stroke="#F59E0B" strokeWidth="1.2"/><path d="M6 5H10M6 8H10M6 11H9" stroke="#F59E0B" strokeWidth="1.2" strokeLinecap="round"/></svg>) },
+                { id: "uploads", label: "Client Documents & Studies", desc: "Existing playbooks, pitch decks, research, customer feedback, surveys — anything the client shares that deepens our understanding.", icon: (<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M8 3L5 6M8 3L11 6" stroke="#F59E0B" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/><path d="M2 11V13C2 14 3 15 4 15H12C13 15 14 14 14 13V11" stroke="#F59E0B" strokeWidth="1.2" strokeLinecap="round"/></svg>) },
               ].map((input) => (
-                <div key={input.id} className={`${cardBase} ${cardActive(input.id)}`} onClick={() => toggle(input.id)}>
-                  <div className="text-xs font-semibold text-white mb-1 flex items-center">{input.label}{activeCard !== input.id && <ExpandHint />}</div>
+                <div key={input.id} className="group cursor-pointer transition-all duration-300 rounded-lg p-4 border-2" style={{ borderColor: activeCard === input.id ? "#F59E0B" : "rgba(245,158,11,0.4)", background: activeCard === input.id ? "rgba(245,158,11,0.08)" : "rgba(245,158,11,0.03)" }} onClick={() => toggle(input.id)}>
+                  <div className="text-xs font-semibold text-white mb-1 flex items-center gap-2">{input.icon}{input.label}{activeCard !== input.id && <ExpandHint />}</div>
                   {activeCard === input.id && <p className="text-neutral-400 text-xs mt-2 leading-relaxed animate-fadeIn">{input.desc}</p>}
                 </div>
               ))}
@@ -237,7 +237,7 @@ export default function BrandBuildingFlow() {
             <div className="max-w-lg mx-auto">
               <div className={`${cardBase} ${cardActive("analyzer")}`} onClick={() => toggle("analyzer")}>
                 <div className="flex items-center justify-between mb-1">
-                  <div className="text-sm font-bold text-white flex items-center">Brand Analyzer{activeCard !== "analyzer" && <ExpandHint />}</div>
+                  <div className="text-sm font-bold text-white flex items-center">Needs Assessment{activeCard !== "analyzer" && <ExpandHint />}</div>
                   <SkillBadge name="brand-analyzer" />
                 </div>
                 {activeCard === "analyzer" && <p className="text-neutral-400 text-xs mt-2 leading-relaxed animate-fadeIn">Synthesizes the client's questionnaire answers and documents into a structured Needs Assessment: business portrait, tensions, gaps, and hypotheses for all four C's. The first output of the pipeline — turning raw client input into strategic intelligence.</p>}
@@ -268,8 +268,8 @@ export default function BrandBuildingFlow() {
                 { id: "culture", label: "Culture", question: "What's shifting?", desc: "Societal shifts, cultural tensions, subcultures, tastemakers, emerging movements. Where the brand connects to something bigger than the product.", skill: "culture-checker" },
               ].map((step) => (
                 <div key={step.id} className={`${cardBase} ${cardActive(step.id)}`} onClick={() => toggle(step.id)}>
-                  <div className="text-xs font-mono uppercase tracking-widest mb-1" style={{ color: "#82FF41" }}>{step.question}</div>
-                  <div className="text-sm font-bold text-white mb-1 flex items-center">{step.label}{activeCard !== step.id && <ExpandHint />}</div>
+                  <div className="text-xs font-mono uppercase tracking-widest mb-1 text-white">{step.question}</div>
+                  <div className="text-sm font-bold mb-1 flex items-center" style={{ color: "#82FF41" }}>{step.label}{activeCard !== step.id && <ExpandHint />}</div>
                   <SkillBadge name={step.skill} />
                   {activeCard === step.id && <p className="text-neutral-400 text-xs mt-2 leading-relaxed animate-fadeIn">{step.desc}</p>}
                 </div>
@@ -314,7 +314,7 @@ export default function BrandBuildingFlow() {
 
         {/* Phase 2 — Brand Strategy with Territory Routes */}
         <div id="phase-2" className="mb-4 rounded-xl p-6 border" style={{ background: "#0f0f0f", borderColor: "#82FF41" }}>
-          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 2</div>
+          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-white">Phase 2a</div>
           <h2 className="text-lg font-bold mb-1">Brand Strategy</h2>
           <p className="text-xs text-neutral-500 mb-4">From insight to direction — From insight to direction</p>
 
@@ -328,9 +328,9 @@ export default function BrandBuildingFlow() {
 
           {/* Territory Routes */}
           <div className="mb-4">
-            <div className="flex items-center gap-2 mb-3">
-              <DirectionBadge text="Strategic Territories" />
-              <span className="text-[10px] text-neutral-600">Potential realities of how the brand could manifest — each territory explored across all strategic dimensions</span>
+            <div className="mb-3">
+              <div className="text-xs font-semibold text-neutral-300 mb-1">Strategic Territories</div>
+              <div className="text-[10px] text-neutral-400">Potential realities of how the brand could manifest — each territory explored across all strategic dimensions</div>
             </div>
             <div className="grid grid-cols-3 gap-3 mb-4">
               {[
@@ -339,7 +339,7 @@ export default function BrandBuildingFlow() {
                 { label: "Territory C", desc: "E.g., bold & disruptive — provocative, future-forward, challenger", bg: "rgba(130,255,65,0.03)" },
               ].map((t, i) => (
                 <div key={i} className="rounded p-2 text-center" style={{ border: "1px dashed rgba(255,255,255,0.2)", background: "#0d0d0d" }}>
-                  <div className="text-xs font-mono font-medium text-white mb-1">{t.label}</div>
+                  <div className="text-xs font-mono font-medium  mb-1" style={{ color: "#82FF41" }}>{t.label}</div>
                   <div className="text-[10px] text-neutral-400 leading-relaxed">{t.desc}</div>
                   <div className="mt-2 text-[10px] font-mono text-neutral-600">Complete strategy #{i + 1}</div>
                 </div>
@@ -354,69 +354,61 @@ export default function BrandBuildingFlow() {
           </div>
         </div>
 
-        {/* Client picks the winning territory */}
+        {/* Client picks the most relevant territories */}
         <div className="flex justify-center py-4">
           <div className="flex flex-col items-center w-full max-w-md">
             <div className="w-px h-4 bg-neutral-700" />
-            <div className="w-full px-4 py-2 rounded-lg border-2 flex items-center justify-center gap-2" style={{ borderColor: "#F59E0B", background: "rgba(245,158,11,0.08)" }}>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#F59E0B" strokeWidth="1.5"/><path d="M5 8L7 10L11 6" stroke="#F59E0B" strokeWidth="1.5"/></svg>
-              <span className="text-xs font-mono font-medium" style={{ color: "#F59E0B" }}>Client picks the winning territory</span>
+            <div className="w-full px-4 py-3 rounded-lg border-2 text-center" style={{ borderColor: "#F59E0B", background: "rgba(245,158,11,0.08)" }}>
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#F59E0B" strokeWidth="1.5"/><path d="M5 8L7 10L11 6" stroke="#F59E0B" strokeWidth="1.5"/></svg>
+                <span className="text-xs font-mono font-medium" style={{ color: "#F59E0B" }}>Client picks the most relevant territories</span>
+              </div>
+              <p className="text-[10px] text-neutral-400 leading-relaxed">We present the strategic territories together. You share your perspective — what resonates, what feels right for your brand. This narrows the field and sets the direction for the next phase.</p>
             </div>
             <div className="w-px h-4 bg-neutral-700" />
             <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="#F59E0B" strokeWidth="2" /></svg>
           </div>
         </div>
 
-        {/* Brand Playbook deliverable — after territory is chosen */}
-        <div className="flex justify-center mb-4">
-          <div className="w-full max-w-md flex items-center justify-center gap-2 p-3 rounded-lg border border-neutral-700 bg-[#141414]">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="#82FF41" strokeWidth="1.5"/><path d="M5 8L7 10L11 6" stroke="#82FF41" strokeWidth="1.5"/></svg>
-            <span className="text-sm font-semibold" style={{ color: "#82FF41" }}>Deliverable: Brand Playbook</span>
-          </div>
-        </div>
-
-        <Arrow label="strategy applied in context" />
-
         {/* Phase 2b — Landing Page from winning territory */}
-        <div className="mb-4 rounded-xl p-6 border border-neutral-800" style={{ background: "#0f0f0f" }}>
-          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 2</div>
-          <h2 className="text-lg font-bold mb-1">Strategy in Context</h2>
-          <p className="text-xs text-neutral-500 mb-4">The winning brand strategy brought to life as a customer-facing landing page</p>
+        <div className="mb-4 rounded-xl p-6 border" style={{ background: "#0f0f0f", borderColor: "#82FF41" }}>
+          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-white">Phase 2b</div>
+          <h2 className="text-lg font-bold mb-1">Brand Strategy in Context</h2>
+          <p className="text-xs text-neutral-500 mb-4">The most relevant brand strategy brought to life as a customer-facing landing page</p>
 
           <div className={`${cardBase} ${cardActive("landing-page")} mb-4`} onClick={() => toggle("landing-page")}>
             <div className="flex items-center justify-between mb-1">
-              <div className="text-sm font-bold text-white flex items-center">Landing Page Creator{activeCard !== "landing-page" && <ExpandHint />}</div>
+              <div className="text-sm font-bold text-white flex items-center">Landing Page Mockups{activeCard !== "landing-page" && <ExpandHint />}</div>
               <SkillBadge name="landing-page-creator" />
             </div>
-            {activeCard === "landing-page" && <p className="text-neutral-400 text-xs mt-2 leading-relaxed animate-fadeIn">Translates the winning Brand Strategy into a customer-facing landing page mock-up with real copy in the actual tone of voice. Includes a manifesto film placeholder with voiceover script. The page follows: hero/positioning, problem, value proposition, proof, manifesto, CTA. Built for strategic validation and message testing — not a final design.</p>}
+            {activeCard === "landing-page" && <p className="text-neutral-400 text-xs mt-2 leading-relaxed animate-fadeIn">Translates one or more strategic territories into customer-facing landing page mock-ups with real copy in the actual tone of voice. Each includes a manifesto film placeholder with voiceover script. The page follows: hero/positioning, problem, value proposition, proof, manifesto, CTA. Built for strategic validation and message testing — not a final design.</p>}
+          </div>
+
+          <div className="flex items-center justify-center gap-2 p-3 rounded-lg border border-neutral-700 bg-[#141414] mb-3">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="#82FF41" strokeWidth="1.5"/><path d="M5 8L7 10L11 6" stroke="#82FF41" strokeWidth="1.5"/></svg>
+            <span className="text-sm font-semibold" style={{ color: "#82FF41" }}>Deliverable: Brand Landing Page Mock-Up</span>
+          </div>
+
+          {/* Quality Gate — inside Phase 2b */}
+          <div className="px-4 py-3 rounded-lg border-2 mb-3 text-center" style={{ borderColor: "#F59E0B", background: "rgba(245,158,11,0.08)" }}>
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1L2 4V8C2 11.3 4.7 14.3 8 15C11.3 14.3 14 11.3 14 8V4L8 1Z" stroke="#F59E0B" strokeWidth="1.3" strokeLinejoin="round"/><path d="M5.5 8L7 9.5L10.5 6" stroke="#F59E0B" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <span className="text-xs font-mono font-medium" style={{ color: "#F59E0B" }}>Quality Gate: Client + Consumer Validation</span>
+            </div>
+            <p className="text-[10px] text-neutral-400 leading-relaxed">The client sees their brand strategy in action. Does this feel like us? Test with real target audiences. Does the message land? This step may include A/B testing of different landing page mock-ups across territories. Only after validation and/or readjustments do we create the final Brand Strategy Playbook and move to visual identity and expression.</p>
           </div>
 
           <div className="flex items-center justify-center gap-2 p-3 rounded-lg border border-neutral-700 bg-[#141414]">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="#82FF41" strokeWidth="1.5"/><path d="M5 8L7 10L11 6" stroke="#82FF41" strokeWidth="1.5"/></svg>
-            <span className="text-sm font-semibold" style={{ color: "#82FF41" }}>Deliverable: Brand Landing Page Mock-Up</span>
+            <span className="text-sm font-semibold" style={{ color: "#82FF41" }}>Deliverable: Brand Strategy Playbook</span>
           </div>
         </div>
 
-        {/* Quality Gate */}
-        <div className="flex justify-center py-4">
-          <div className="flex flex-col items-center w-full max-w-md">
-            <div className="w-px h-4 bg-neutral-700" />
-            <div className="w-full px-4 py-3 rounded-lg border-2 mb-2" style={{ borderColor: "#F59E0B", background: "rgba(245,158,11,0.08)" }}>
-              <div className="flex items-center gap-2 mb-1">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#F59E0B" strokeWidth="1.5"/><path d="M5 8L7 10L11 6" stroke="#F59E0B" strokeWidth="1.5"/></svg>
-                <span className="text-xs font-mono font-medium" style={{ color: "#F59E0B" }}>Quality Gate: Client + Consumer Validation</span>
-              </div>
-              <p className="text-[10px] text-neutral-400 leading-relaxed ml-6">The client sees their brand strategy in action. Does this feel like us? Test with real target audiences. Does the message land? This step may include A/B testing of different landing page mock-ups across territories. Only after validation and/or readjustments do we move to visual identity.</p>
-            </div>
-            <div className="w-px h-4 bg-neutral-700 mt-2" />
-            <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="#F59E0B" strokeWidth="2" /></svg>
-            <div className="text-[10px] font-mono text-neutral-500 mt-1">validated direction</div>
-          </div>
-        </div>
+        <Arrow label="validated direction" />
 
         {/* Phase 3 — Brand Identity */}
         <div id="phase-3" className="mb-4 rounded-xl p-6 border" style={{ background: "#0f0f0f", borderColor: "#82FF41" }}>
-          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-neutral-500">Phase 3</div>
+          <div className="text-xs font-mono uppercase tracking-widest mb-1 text-white">Phase 3</div>
           <h2 className="text-lg font-bold mb-1">Brand Identity</h2>
           <p className="text-xs text-neutral-500 mb-4">From strategy to expression — only after strategic direction is validated. Distinctiveness is the dominant force.</p>
 
@@ -457,6 +449,48 @@ export default function BrandBuildingFlow() {
           <div className="flex items-center justify-center gap-2 p-3 rounded-lg border border-neutral-700 bg-[#141414]">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="#82FF41" strokeWidth="1.5"/><path d="M5 8L7 10L11 6" stroke="#82FF41" strokeWidth="1.5"/></svg>
             <span className="text-sm font-semibold" style={{ color: "#82FF41" }}>Deliverable: Brand Style Guide</span>
+          </div>
+        </div>
+
+        {/* Timeline Sprint Section */}
+        <div className="mt-16 mb-4">
+          <div className="text-center mb-8">
+            <div className="text-xs font-mono uppercase tracking-widest mb-2 text-neutral-500">The Sprint Plan</div>
+            <h2 className="text-lg font-bold mb-2">How This All Unfolds.</h2>
+            <p className="text-neutral-500 text-sm max-w-lg mx-auto">A structured, lean 6-week sprint from first questionnaire to full-fledged brand strategy. You're always part of the process.</p>
+          </div>
+
+          {/* Horizontal scroll container */}
+          <div className="relative">
+            <div className="overflow-x-auto pb-4" style={{ scrollbarWidth: "thin", scrollbarColor: "#333 #0a0a0a" }}>
+              <div className="flex gap-4 px-2" style={{ minWidth: "max-content" }}>
+                {[
+                  { week: "Week 1", phase: "Phase 1", title: "Needs Assessment", desc: "You fill out a structured discovery questionnaire. We analyse your answers, review any documents you share, and produce a needs assessment that sets the direction for everything that follows. You review it, we align.", color: "#82FF41" },
+                  { week: "Week 2", phase: "Phase 1", title: "Company & Category", desc: "We gather all crucial intelligence around your business and your competitive landscape — strengths, blind spots, market conventions, white space. We present our findings, you give feedback, we refine.", color: "#82FF41" },
+                  { week: "Week 3", phase: "Phase 1", title: "Consumer & Culture", desc: "We dive into your audience's psychology and the cultural forces shaping your space. We present both dossiers, you review and give feedback — same collaborative rhythm as before.", color: "#82FF41" },
+                  { week: "Week 4", phase: "Bridge", title: "4C Synthesis", desc: "We condense all four dossiers into one strategic brief — cross-cutting patterns, strategic territories, and hypotheses. This is internal work: connecting the dots and preparing the ground for brand strategy.", color: "#666" },
+                  { week: "Week 5", phase: "Phase 2", title: "Brand Strategy", desc: "We come back together. We present 2–3 strategic territory routes — each with a complete brand strategy across all dimensions. You experience different directions for your brand and share your first reactions.", color: "#82FF41" },
+                  { week: "Week 6", phase: "Phase 2", title: "Landing Page Mockups", desc: "The most relevant territories come to life as customer-facing landing page mock-ups. You see your brand talking to your audience. We test, validate, and conclude on the winning territory together. Brand Playbook delivered.", color: "#82FF41" },
+                  { week: "Week 7+", phase: "Phase 3", title: "Brand Identity", desc: "Visual and sonic identity development begins — logo, brand assets, colour, typography, imagery. Scope and timeline depend on deliverables and whether we involve a designer. Collaborative throughout.", color: "#F59E0B" },
+                ].map((item, i) => (
+                  <div key={i} className="flex-shrink-0 w-56 rounded-xl p-4 border border-neutral-800" style={{ background: "#0f0f0f" }}>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-lg font-bold text-white">{item.week}</span>
+                      <span className="text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded" style={{ color: item.color, background: `${item.color}15`, border: `1px solid ${item.color}30` }}>{item.phase}</span>
+                    </div>
+                    <div className="text-sm font-semibold text-white mb-2">{item.title}</div>
+                    <p className="text-[11px] text-neutral-500 leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Scroll hint */}
+            <div className="flex justify-center mt-3">
+              <div className="text-[10px] font-mono text-neutral-300 flex items-center gap-2">
+                <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M1 5H13M10 1L14 5L10 9" stroke="#ccc" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                scroll to explore
+              </div>
+            </div>
           </div>
         </div>
 
@@ -501,7 +535,7 @@ export default function BrandBuildingFlow() {
         <div className="max-w-4xl mx-auto px-6">
           <div id="contact" className="mt-12 rounded-xl p-6 border border-neutral-800/50" style={{ background: "#0c0c0c" }}>
             <div className="text-xs font-mono uppercase tracking-widest mb-4 text-neutral-500">Get in Touch</div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
                 { label: "Email", value: "mail@janberndt.com", href: "mailto:mail@janberndt.com", icon: (<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1" stroke="#82FF41" strokeWidth="1.2"/><path d="M1 4L8 9L15 4" stroke="#82FF41" strokeWidth="1.2"/></svg>) },
                 { label: "Phone / WhatsApp", value: "+49 151 12 11 2000", href: "https://wa.me/4915112112000", icon: (<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 11.5C14 12 13.5 13.5 12 14C10.5 14.5 7 13 4.5 10.5C2 8 1 5 1.5 3.5C2 2 3.5 1.5 4 1.5L6 5L4.5 7C4.5 7 5.5 9 7 10.5C8.5 12 9.5 11.5 9.5 11.5L11.5 10L14 11.5Z" stroke="#82FF41" strokeWidth="1.2" strokeLinejoin="round"/></svg>) },
